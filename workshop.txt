@@ -1,0 +1,6 @@
+version=1
+id=2884426117
+title=Project RP Expansion
+description=This mod is an expansion of Aiteron's Project RP for the use of [url=discord.gg/kentuckyroleplay]Kentucky Roleplay[/url], who commissioned both me and the original mod. You may use this mod for your own servers if you wish, however.
+tags=Build 41;Framework;Misc;Multiplayer
+visibility=public
