@@ -19,30 +19,20 @@ do
         item:DoParam('UseDelta = 0.003')
     end
 
-    -- put documents in wallet (not going to enable this until next wipe)
-    --[[item = scriptManager:getItem('Base.Wallet')
-    if item then
-        item:DoParam('Type = Container')
-        item:DoParam('KeepOnDeath = TRUE')
+    -- put documents in wallet
+    local items = {'Base.Wallet', 'Base.Wallet2', 'Base.Wallet3', 'Base.Wallet4'}
+    for _,scriptName in ipairs(items) do
+        local item = scriptManager:getItem(scriptName)
+        if item then
+            item:DoParam('Type = Container')
+            item:DoParam('KeepOnDeath = TRUE')
+            item:DoParam('AcceptItemFunction = AcceptItemFunction.DocumentationOnly')
+            item:DoParam('Capacity = 50')
+        end
     end
-    item = scriptManager:getItem('Base.Wallet2')
-    if item then
-        item:DoParam('Type = Container')
-        item:DoParam('KeepOnDeath = TRUE')
-    end
-    item = scriptManager:getItem('Base.Wallet3')
-    if item then
-        item:DoParam('Type = Container')
-        item:DoParam('KeepOnDeath = TRUE')
-    end
-    item = scriptManager:getItem('Base.Wallet4')
-    if item then
-        item:DoParam('Type = Container')
-        item:DoParam('KeepOnDeath = TRUE')
-    end]]
 
     -- no module lol?
-    local items = {'.CollegeDiploma', '.DrivingLicense', '.FirearmPermitA', '.FirearmPermitB', '.FirearmPermitC', '.HuntingPermit',
+    items = {'.CollegeDiploma', '.DrivingLicense', '.FirearmPermitA', '.FirearmPermitB', '.FirearmPermitC', '.HuntingPermit',
     '.IdentificationCard', '.MedicalLicense', '.PropertyDeed', '.Passport', '.VehicleRegistration'}
     for _,scriptName in ipairs(items) do
         local item = scriptManager:getItem(scriptName)
