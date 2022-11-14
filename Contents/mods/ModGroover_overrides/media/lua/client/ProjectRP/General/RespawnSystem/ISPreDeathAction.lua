@@ -6,8 +6,8 @@ function ISPreDeathAction:isValid()
 end
 
 function ISPreDeathAction:update()
-    if self.character:getBodyDamage():getHealth() < 20 then
-        self.character:getBodyDamage():AddGeneralHealth(8)
+    if self.character:getBodyDamage():getHealth() < 15 then
+        self.character:getBodyDamage():AddGeneralHealth(14)
     end
 end
 

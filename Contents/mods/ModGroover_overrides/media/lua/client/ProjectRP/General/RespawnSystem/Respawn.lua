@@ -222,7 +222,7 @@ ProjectRP.Client.Respawn.onSpawn = function(int, player)
 			Events.OnTick.Add(respawnClothes)
 		else
 			setBodyPartDamage(player)
-			player:getBodyDamage():ReduceGeneralHealth(90)
+			player:getBodyDamage():ReduceGeneralHealth(80)
 		end
 
 		ProjectRP.Client.Respawn.playerDataBackup = nil;
@@ -331,7 +331,7 @@ local function getBodyPartsData(playerObj)
 		data[index].bandaged = bodyPart:bandaged()
 		data[index].bandageType = bodyPart:getBandageType()
 		data[index].bandageLife = bodyPart:getBandageLife()
-		data[index].health = bodyPart:getHealth()
+		--data[index].health = bodyPart:getHealth()
 		data[index].haveBullet = bodyPart:haveBullet()
 		data[index].isCut = bodyPart:isCut()
 		data[index].additionalPain = bodyPart:getAdditionalPain(false)
