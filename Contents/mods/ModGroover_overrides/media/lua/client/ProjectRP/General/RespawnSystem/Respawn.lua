@@ -275,6 +275,10 @@ local keyExceptions = { ["CarKey"] = true, ["KeyRing"] = true, ["Key1"] = true, 
 local function isNotKey(item)
 	return not keyExceptions[item:getType()]
 end
+local wallets = {["Wallet"] = true, ["Wallet2"] = true, ["Wallet3"] = true, ["Wallet4"] = true}
+local function isWallet(item)
+	return wallets[item:getType()]
+end
 
 function ProjectRP.Client.Respawn.RemoveBody()
 	for i=0, ProjectRP.Client.Respawn.DeathSquare:getStaticMovingObjects():size()-1 do
@@ -286,8 +290,16 @@ function ProjectRP.Client.Respawn.RemoveBody()
 				local items = container:getItems()
 				for j = 0, items:size()-1 do
 					local item2 = items:get(j)
-					if ProjectRP.Client.Respawn.dropItemsOnDeath and isNotKey(item2) and not item2:getModData().KeepOnDeath then
+					if ProjectRP.Client.Respawn.dropItemsOnDeath and isNotKey(item2) and not item2:getModData().KeepOnDeath and not isWallet(item2) then
 						ProjectRP.Client.Respawn.DeathSquare:AddWorldInventoryItem(item2, (ZombRand(0, 10)-5)/10.0, (ZombRand(0, 10)-5)/10.0, (ZombRand(0, 10)-5)/10.0)
+					elseif isWallet(item2) then
+						if item2:getModData().moneyCount > 0 then
+							local moneyWallet = InventoryItemFactory.CreateItem(item2:getFullType()) -- new wallet at death location with their money in it
+							moneyWallet:getModData().moneyCount = item2:getModData().moneyCount
+							ProjectRP.Client.Respawn.DeathSquare:AddWorldInventoryItem(moneyWallet, (ZombRand(0, 10)-5)/10.0, (ZombRand(0, 10)-5)/10.0, (ZombRand(0, 10)-5)/10.0)
+							item2:getModData().moneyCount = 0
+						end
+						table.insert(ProjectRP.Client.Respawn.BodyItems, item2)
 					else
 						table.insert(ProjectRP.Client.Respawn.BodyItems, item2)
 					end
