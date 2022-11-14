@@ -173,7 +173,6 @@ local function setBodyPartDamage(playerObj)
 
 	local bodyParts = playerObj:getBodyDamage():getBodyParts()
 	for i=1,bodyParts:size() do
-		print("DICK", i)
         local bodyPart = bodyParts:get(i-1)
 		local index = bodyPart:getIndex()
 		bodyPart:setScratched(data[index].scratched, false)
@@ -182,7 +181,7 @@ local function setBodyPartDamage(playerObj)
 		bodyPart:SetBitten(data[index].bitten)
 		bodyPart:setBleeding(data[index].bleeding)
 		bodyPart:setBandaged(data[index].bandaged, data[index].bandageLife, false, data[index].bandageType)
-		bodyPart:SetHealth(data[index].health)
+		--bodyPart:SetHealth(data[index].health)
 		bodyPart:setHaveBullet(data[index].haveBullet, 0)
 		bodyPart:setCut(data[index].isCut)
 		bodyPart:setAdditionalPain(data[index].additionalPain)
@@ -275,6 +274,10 @@ end
 local keyExceptions = { ["CarKey"] = true, ["KeyRing"] = true, ["Key1"] = true, ["Key2"] = true, ["Key3"] = true, ["Key4"] = true, ["Key5"] = true}
 local function isNotKey(item)
 	return not keyExceptions[item:getType()]
+end
+local wallets = {["Wallet"] = true, ["Wallet2"] = true, ["Wallet3"] = true, ["Wallet4"] = true}
+local function isWallet(item)
+	return wallets[item:getType()]
 end
 
 function ProjectRP.Client.Respawn.RemoveBody()
