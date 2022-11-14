@@ -1,18 +1,53 @@
 do
     local scriptManager = getScriptManager()
 
-    local cordlessPhone = scriptManager:getItem('Base.CordlessPhone')
-    cordlessPhone:DoParam('DisplayCategory = Communications')
-    cordlessPhone:DoParam('Type = Radio')
-    cordlessPhone:DoParam('TwoWay = TRUE')
-    cordlessPhone:DoParam('TransmitRange = 99999')
-    cordlessPhone:DoParam('MicRange = 0')
-    cordlessPhone:DoParam('BaseVolumeRange = 0')
-    cordlessPhone:DoParam('IsPortable = TRUE')
-    cordlessPhone:DoParam('IsTelevision = FALSE')
-    cordlessPhone:DoParam('MinChannel = 200')
-    cordlessPhone:DoParam('MaxChannel = 1000000')
-    cordlessPhone:DoParam('UsesBattery = TRUE')
-    cordlessPhone:DoParam('IsHighTier = TRUE')
-    cordlessPhone:DoParam('UseDelta = 0.003')
+    -- radio phone (for pager)
+    local item = scriptManager:getItem('Base.CordlessPhone')
+    if item then
+        item:DoParam('DisplayCategory = Communications')
+        item:DoParam('Type = Radio')
+        item:DoParam('TwoWay = TRUE')
+        item:DoParam('TransmitRange = 99999')
+        item:DoParam('MicRange = 0')
+        item:DoParam('BaseVolumeRange = 0')
+        item:DoParam('IsPortable = TRUE')
+        item:DoParam('IsTelevision = FALSE')
+        item:DoParam('MinChannel = 200')
+        item:DoParam('MaxChannel = 1000000')
+        item:DoParam('UsesBattery = TRUE')
+        item:DoParam('IsHighTier = TRUE')
+        item:DoParam('UseDelta = 0.003')
+    end
+
+    -- put documents in wallet (not going to enable this until next wipe)
+    --[[item = scriptManager:getItem('Base.Wallet')
+    if item then
+        item:DoParam('Type = Container')
+        item:DoParam('KeepOnDeath = TRUE')
+    end
+    item = scriptManager:getItem('Base.Wallet2')
+    if item then
+        item:DoParam('Type = Container')
+        item:DoParam('KeepOnDeath = TRUE')
+    end
+    item = scriptManager:getItem('Base.Wallet3')
+    if item then
+        item:DoParam('Type = Container')
+        item:DoParam('KeepOnDeath = TRUE')
+    end
+    item = scriptManager:getItem('Base.Wallet4')
+    if item then
+        item:DoParam('Type = Container')
+        item:DoParam('KeepOnDeath = TRUE')
+    end]]
+
+    -- no module lol?
+    local items = {'.CollegeDiploma', '.DrivingLicense', '.FirearmPermitA', '.FirearmPermitB', '.FirearmPermitC', '.HuntingPermit',
+    '.IdentificationCard', '.MedicalLicense', '.PropertyDeed', '.Passport', '.VehicleRegistration'}
+    for _,scriptName in ipairs(items) do
+        local item = scriptManager:getItem(scriptName)
+        if item then
+            item:DoParam('KeepOnDeath = TRUE')
+        end
+    end
 end

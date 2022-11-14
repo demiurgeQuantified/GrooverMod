@@ -275,10 +275,6 @@ local keyExceptions = { ["CarKey"] = true, ["KeyRing"] = true, ["Key1"] = true, 
 local function isNotKey(item)
 	return not keyExceptions[item:getType()]
 end
-local wallets = {["Wallet"] = true, ["Wallet2"] = true, ["Wallet3"] = true, ["Wallet4"] = true}
-local function isWallet(item)
-	return wallets[item:getType()]
-end
 
 function ProjectRP.Client.Respawn.RemoveBody()
 	for i=0, ProjectRP.Client.Respawn.DeathSquare:getStaticMovingObjects():size()-1 do
@@ -290,7 +286,7 @@ function ProjectRP.Client.Respawn.RemoveBody()
 				local items = container:getItems()
 				for j = 0, items:size()-1 do
 					local item2 = items:get(j)
-					if ProjectRP.Client.Respawn.dropItemsOnDeath and isNotKey(item2) then
+					if ProjectRP.Client.Respawn.dropItemsOnDeath and isNotKey(item2) and not item2:getModData().KeepOnDeath then
 						ProjectRP.Client.Respawn.DeathSquare:AddWorldInventoryItem(item2, (ZombRand(0, 10)-5)/10.0, (ZombRand(0, 10)-5)/10.0, (ZombRand(0, 10)-5)/10.0)
 					else
 						table.insert(ProjectRP.Client.Respawn.BodyItems, item2)
