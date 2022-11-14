@@ -5,9 +5,11 @@ function ISPreDeathAction:isValid()
 	return true;
 end
 
+local numBodyParts = BodyPartType.ToIndex(BodyPartType.MAX)
+
 function ISPreDeathAction:update()
-    if self.character:getBodyDamage():getHealth() < 15 then
-        self.character:getBodyDamage():AddGeneralHealth(14)
+    if self.character:getBodyDamage():getHealth() < 25 then
+        self.character:getBodyDamage():AddGeneralHealth((25 - self.character:getBodyDamage():getHealth()) * numBodyParts)
     end
 end
 
