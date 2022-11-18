@@ -15,7 +15,7 @@ ProjectRP.Server.ServerDataBase.Commands.PrivateZones.AddPrivateZone = function(
         accessEveryone = {}
     }
     table.insert(zones, zoneData)
-    sendClientCommand('LocalPrivateZones', 'UpdatePrivateZone', zoneData)
+    sendServerCommand('LocalPrivateZones', 'UpdatePrivateZone', zoneData)
 end
 
 ProjectRP.Server.ServerDataBase.Commands.PrivateZones.RemoveData = function(playerObj, args)
@@ -28,7 +28,7 @@ ProjectRP.Server.ServerDataBase.Commands.PrivateZones.RemoveData = function(play
                 elseif args.type == "user" then
                     zone.accessUsers[args.val] = nil
                 end
-                sendClientCommand('LocalPrivateZones', 'UpdatePrivateZone', zone)
+                sendServerCommand('LocalPrivateZones', 'UpdatePrivateZone', zone)
 				return
 			end
 		end
@@ -59,7 +59,7 @@ ProjectRP.Server.ServerDataBase.Commands.PrivateZones.SetData = function(playerO
                         accessToAll = args.accessToAll
                     }
                 end
-                sendClientCommand('LocalPrivateZones', 'UpdatePrivateZone', zone)
+                sendServerCommand('LocalPrivateZones', 'UpdatePrivateZone', zone)
 				return
 			end
 		end
@@ -76,7 +76,7 @@ ProjectRP.Server.ServerDataBase.Commands.PrivateZones.SetOwner = function(player
 		if args.x >= zone.x1 and args.x <= zone.x2 then
 			if args.y >= zone.y1 and args.y <= zone.y2 then
                 zone.owner = args.owner
-                sendClientCommand('LocalPrivateZones', 'UpdatePrivateZone', zone)
+                sendServerCommand('LocalPrivateZones', 'UpdatePrivateZone', zone)
             end
         end
     end
@@ -97,5 +97,5 @@ ProjectRP.Server.ServerDataBase.Commands.PrivateZones.RemoveZone = function(play
     end
     if index == -1 then return end
     table.remove(zones, index)
-    sendClientCommand('LocalPrivateZones', 'RemoveZone', zoneData)
+    sendServerCommand('LocalPrivateZones', 'RemoveZone', zoneData)
 end
