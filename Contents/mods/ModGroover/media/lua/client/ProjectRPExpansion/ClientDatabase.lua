@@ -10,6 +10,7 @@ function ProjectRP.Client.ClientDataBase.OnReceiveGlobalModData(key, modData)
         ModData.add(key, modData)
 
         if privateZonesRequested and key == 'PrivateZones' then
+            privateZonesRequested = false
             ProjectRP.Client.ClientDataBase.CreateLocalPrivateZonesDatabase(modData)
         end
     end
