@@ -5,8 +5,8 @@ ProjectRP.Server.Stats.toFile = function()
     ProjectRP.Server.Stats.updateMoneyAtms()
     local data = {}
     data['hour'] = getGameTime():getHour()
-    data['day'] = getGameTime():getDay()
-    data['month'] = getGameTime():getMonth()
+    data['day'] = getGameTime():getDay() + 1
+    data['month'] = getGameTime():getMonth() + 1
     data['year'] = getGameTime():getYear()
 
     for k,v in pairs(ProjectRP.Server.Stats.Data) do
