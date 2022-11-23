@@ -1,7 +1,9 @@
 local Delay = {}
+Delay.Delays = {}
+
 Delay.DelayFunction = function(closure, time)
     Delay.Delays[Delay.currentTick + time] = Delay.Delays[Delay.currentTick + time] or {}
-    table.add(Delay.Delays[Delay.currentTick + time], closure)
+    table.insert(Delay.Delays[Delay.currentTick + time], closure)
 end
 
 Delay.OnTick = function(tick)

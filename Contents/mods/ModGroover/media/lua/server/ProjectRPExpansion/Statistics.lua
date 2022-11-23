@@ -1,3 +1,4 @@
+if isClient() then return end
 ProjectRP.Server.Stats = {}
 
 ProjectRP.Server.Stats.GetMoneyAtms = function()

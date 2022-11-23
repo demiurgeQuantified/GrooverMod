@@ -6,8 +6,8 @@ ProjectRP.Client.Stats.ReportInventoryMoney = function()
     local sum = ProjectRP.Client.Money.getMoneyCountInContainer(inventory)
     for _,walletType in pairs(ProjectRP.Client.Money.WalletTypes) do
         local wallets = inventory:getAllType(walletType)
-        for _,wallet in pairs(wallets) do
-            sum = sum + wallet:getModData().moneyCount
+        for i = 0, wallets:size()-1 do
+            sum = sum + wallets:get(i):getModData().moneyCount
         end
     end
     sendClientCommand('ProjectRPStatistics', 'ReportInventoryMoney',  {money = sum})
