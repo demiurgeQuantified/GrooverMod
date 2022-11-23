@@ -26,13 +26,24 @@ end
 
 
 ProjectRP.Server.Stats.ToFile = function()
+    local fileReader = getFileReader('projectrp_stats.json', false)
+    local result = ''
+    while true do
+        local line = fileReader:readLine()
+        if not line then break end
+        result = result .. line
+    end
+    fileReader:close()
+
     local data = {}
-    data.hour = getGameTime():getHour()
-    data.day = getGameTime():getDay() + 1
-    data.month = getGameTime():getMonth() + 1
-    data.year = getGameTime():getYear()
-    data.moneyAtms = ProjectRP.Server.Stats.GetMoneyAtms()
-    data.moneyInventory = ProjectRP.Server.Stats.GetMoneyInventory()
+    if result ~= '' then
+        data = ProjectRP.Utils.Json.Decode(result)
+    end
+
+    local datetime = getGameTime():getMonth() + 1 .. "/" .. getGameTime():getDay() + 1 .. "/" .. getGameTime():getYear() - 30 .. " " .. getGameTime():getHour() .. ":00:00"
+    data[datetime] = {}
+    data[datetime].moneyAtms = ProjectRP.Server.Stats.GetMoneyAtms()
+    data[datetime].moneyInventory = ProjectRP.Server.Stats.GetMoneyInventory()
 
     local fileWriter = getFileWriter('projectrp_stats.json', true, false)
     fileWriter:write(ProjectRP.Utils.Json.Encode(data))
