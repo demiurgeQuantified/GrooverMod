@@ -51,6 +51,10 @@ ProjectRP.Server.Stats.ToFile = function()
     local fileWriter = getFileWriter('projectrp_stats.json', true, false)
     fileWriter:write(ProjectRP.Utils.Json.Encode(data))
     fileWriter:close()
+
+    fileWriter = getFileWriter('projectrp_money.json', true, false)
+    fileWriter:write(ProjectRP.Utils.Json.Encode(ModData.get("MoneyBalance")))
+    fileWriter:close()
 end
 
 
