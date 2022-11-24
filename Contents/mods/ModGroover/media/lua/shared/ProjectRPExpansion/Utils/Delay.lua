@@ -1,4 +1,5 @@
 local Delay = {}
+Delay.currentTick = 0
 Delay.Delays = {}
 
 Delay.DelayFunction = function(closure, time)

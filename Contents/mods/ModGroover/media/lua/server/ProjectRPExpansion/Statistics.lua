@@ -15,8 +15,11 @@ end
 ProjectRP.Server.Stats.GetMoneyInventory = function()
     local statsCache = ModData.getOrCreate("StatisticsCache")
     local sum = 0
+    local cutoff = getGameTime():getDaysSurvived() - 7
 
     for _,v in pairs(statsCache) do
+        if not v.lastSeen then v.lastSeen = cutoff + 7 end -- backwards compatibility TODO: remove this line in next patch as it only needs to run once ever
+        if v.lastSeen < cutoff then v = nil; return end
         sum = sum + v.inventoryMoney
     end
 
@@ -63,6 +66,7 @@ ProjectRP.Server.Stats.ReportInventoryMoney = function(player, args)
     local statsCache = ModData.getOrCreate('StatisticsCache')
     statsCache[player:getUsername()] = statsCache[player:getUsername()] or {}
     statsCache[player:getUsername()].inventoryMoney = args.money
+    statsCache[player:getUsername()].lastSeen = getGameTime():getDaysSurvived()
 end
 
 ProjectRP.Server.Stats.OnClientCommand = function(mod, command, player, args)
