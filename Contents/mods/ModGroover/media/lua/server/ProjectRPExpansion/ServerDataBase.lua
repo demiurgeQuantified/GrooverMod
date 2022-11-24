@@ -1,5 +1,48 @@
 require 'ProjectRP/ServerDataBase'
 
+ProjectRP.Server.ServerDataBase.Commands.MoneyBalance.DecreaseMoneyBalance = function(playerObj, args)
+    local balance = ModData.get("MoneyBalance")
+    if balance[playerObj:getUsername()] == nil then
+        ProjectRP.Server.ServerDataBase.Commands.MoneyBalance.CreatePlayerAccount(playerObj)
+    end
+    balance[playerObj:getUsername()].num = balance[playerObj:getUsername()].num - args.num
+
+    if args.num > ProjectRP.Server.Stats.SuspiciousTransferAmount then
+        ProjectRP.Server.Stats.LogTransfer(playerObj:getUsername() .. ' withdrew ' .. args.num)
+    end
+
+    ModData.transmit("MoneyBalance")
+end
+
+ProjectRP.Server.ServerDataBase.Commands.MoneyBalance.IncreaseMoneyBalance = function(playerObj, args)
+    local balance = ModData.get("MoneyBalance")
+    if balance[playerObj:getUsername()] == nil then
+        ProjectRP.Server.ServerDataBase.Commands.MoneyBalance.CreatePlayerAccount(playerObj)
+    end
+    balance[playerObj:getUsername()].num = balance[playerObj:getUsername()].num + args.num
+
+    if args.num > ProjectRP.Server.Stats.SuspiciousTransferAmount then
+        ProjectRP.Server.Stats.LogTransfer(playerObj:getUsername() .. ' deposited ' .. args.num)
+    end
+
+    ModData.transmit("MoneyBalance")
+end
+
+ProjectRP.Server.ServerDataBase.Commands.MoneyBalance.TransferMoney = function(playerObj, args)
+    local balance = ModData.get("MoneyBalance")
+    if balance[args.nickname] ~= nil then
+        balance[args.nickname].num = balance[args.nickname].num + args.num
+    else
+        print("Wrong transfer operation:" .. args.nickname .. " " .. args.num)
+    end
+
+    if args.num > ProjectRP.Server.Stats.SuspiciousTransferAmount then
+        ProjectRP.Server.Stats.LogTransfer(playerObj:getUsername() .. ' sent ' .. args.num .. ' to ' .. args.nickname)
+    end
+
+    ModData.transmit("MoneyBalance")
+end
+
 local function pointIsInZone(x, y, zone)
     return (x >= zone.x1 and x <= zone.x2 or x >= zone.x2 and x <= zone.x1) and (y >= zone.y1 and y <= zone.y2 or y >= zone.y2 and y <= zone.y1)
 end

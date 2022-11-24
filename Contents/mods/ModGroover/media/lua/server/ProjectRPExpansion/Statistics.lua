@@ -1,5 +1,6 @@
 if isClient() then return end
 ProjectRP.Server.Stats = {}
+ProjectRP.Server.Stats.SuspiciousTransferAmount = 1000
 
 ProjectRP.Server.Stats.GetMoneyAtms = function()
     local moneyBalance = ModData.get("MoneyBalance")
@@ -27,6 +28,14 @@ ProjectRP.Server.Stats.GetMoneyInventory = function()
 end
 
 
+
+ProjectRP.Server.Stats.LogTransfer = function(transferDetails)
+    print('SUSPICIOUS: ' .. transferDetails)
+
+    local fileWriter = getFileWriter('projectrp_log.txt', true, true)
+    fileWriter:write(transferDetails)
+    fileWriter:close()
+end
 
 ProjectRP.Server.Stats.ToFile = function()
     local fileReader = getFileReader('projectrp_stats.json', false)
