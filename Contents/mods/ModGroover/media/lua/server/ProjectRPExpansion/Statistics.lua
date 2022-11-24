@@ -33,7 +33,7 @@ ProjectRP.Server.Stats.LogTransfer = function(transferDetails)
     print('SUSPICIOUS: ' .. transferDetails)
 
     local fileWriter = getFileWriter('projectrp_log.txt', true, true)
-    fileWriter:write(transferDetails)
+    fileWriter:write(transferDetails .. '\n')
     fileWriter:close()
 end
 
