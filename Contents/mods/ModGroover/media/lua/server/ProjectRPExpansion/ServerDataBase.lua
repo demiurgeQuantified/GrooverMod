@@ -1,46 +1,27 @@
 require 'ProjectRP/ServerDataBase'
 
+local old_DecreaseMoneyBalance = ProjectRP.Server.ServerDataBase.Commands.MoneyBalance.DecreaseMoneyBalance
 ProjectRP.Server.ServerDataBase.Commands.MoneyBalance.DecreaseMoneyBalance = function(playerObj, args)
-    local balance = ModData.get("MoneyBalance")
-    if balance[playerObj:getUsername()] == nil then
-        ProjectRP.Server.ServerDataBase.Commands.MoneyBalance.CreatePlayerAccount(playerObj)
-    end
-    balance[playerObj:getUsername()].num = balance[playerObj:getUsername()].num - args.num
-
+    old_DecreaseMoneyBalance(playerObj, args)
     if args.num > ProjectRP.Server.Stats.SuspiciousTransferAmount then
         ProjectRP.Server.Stats.LogTransfer(playerObj:getUsername() .. ' withdrew ' .. args.num)
     end
-
-    ModData.transmit("MoneyBalance")
 end
 
+local old_IncreaseMoneyBalance = ProjectRP.Server.ServerDataBase.Commands.MoneyBalance.IncreaseMoneyBalance
 ProjectRP.Server.ServerDataBase.Commands.MoneyBalance.IncreaseMoneyBalance = function(playerObj, args)
-    local balance = ModData.get("MoneyBalance")
-    if balance[playerObj:getUsername()] == nil then
-        ProjectRP.Server.ServerDataBase.Commands.MoneyBalance.CreatePlayerAccount(playerObj)
-    end
-    balance[playerObj:getUsername()].num = balance[playerObj:getUsername()].num + args.num
-
+    old_IncreaseMoneyBalance(playerObj, args)
     if args.num > ProjectRP.Server.Stats.SuspiciousTransferAmount then
         ProjectRP.Server.Stats.LogTransfer(playerObj:getUsername() .. ' deposited ' .. args.num)
     end
-
-    ModData.transmit("MoneyBalance")
 end
 
+local old_TransferMoney = ProjectRP.Server.ServerDataBase.Commands.MoneyBalance.TransferMoney
 ProjectRP.Server.ServerDataBase.Commands.MoneyBalance.TransferMoney = function(playerObj, args)
-    local balance = ModData.get("MoneyBalance")
-    if balance[args.nickname] ~= nil then
-        balance[args.nickname].num = balance[args.nickname].num + args.num
-    else
-        print("Wrong transfer operation:" .. args.nickname .. " " .. args.num)
-    end
-
+    old_TransferMoney(playerObj, args)
     if args.num > ProjectRP.Server.Stats.SuspiciousTransferAmount then
         ProjectRP.Server.Stats.LogTransfer(playerObj:getUsername() .. ' sent ' .. args.num .. ' to ' .. args.nickname)
     end
-
-    ModData.transmit("MoneyBalance")
 end
 
 local function pointIsInZone(x, y, zone)
