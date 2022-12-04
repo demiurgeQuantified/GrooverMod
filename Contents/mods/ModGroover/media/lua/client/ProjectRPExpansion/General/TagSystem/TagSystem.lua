@@ -4,7 +4,7 @@ require 'ProjectRP/General/TagSystem/TagSystem'
 ---@param tag string
 function ProjectRP.Client.TagSystem.HaveProfessionTag(username, tag)
     local userDatabase = ModData.getOrCreate("UserDatabase")
-    if instanceOf(username, 'IsoPlayer') then
+    if instanceof(username, 'IsoPlayer') then
         username = username:getUsername()
     end
     if userDatabase[username] == nil then return end
