@@ -19,7 +19,6 @@ ProjectRP.Server.Stats.GetMoneyInventory = function()
     local cutoff = getGameTime():getDaysSurvived() - 7
 
     for _,v in pairs(statsCache) do
-        if not v.lastSeen then v.lastSeen = cutoff + 7 end -- backwards compatibility TODO: remove this line in next patch as it only needs to run once ever
         if v.lastSeen < cutoff then v = nil; return end
         sum = sum + v.inventoryMoney
     end
