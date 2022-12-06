@@ -1,4 +1,6 @@
 require 'ProjectRP/ServerDataBase'
+require 'ProjectRP/ClientCommands'
+if isClient() then ProjectRP.Server = nil; return end
 
 local old_DecreaseMoneyBalance = ProjectRP.Server.ServerDataBase.Commands.MoneyBalance.DecreaseMoneyBalance
 ProjectRP.Server.ServerDataBase.Commands.MoneyBalance.DecreaseMoneyBalance = function(playerObj, args)
