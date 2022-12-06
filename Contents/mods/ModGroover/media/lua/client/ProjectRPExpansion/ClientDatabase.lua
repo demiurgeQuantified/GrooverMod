@@ -20,5 +20,6 @@ Events.OnReceiveGlobalModData.Add(ProjectRP.Client.ClientDataBase.OnReceiveGloba
 function ProjectRP.Client.ClientDataBase.OnConnected()
     privateZonesRequested = true
 	ModData.request('PrivateZones')
+    ModData.request('MoneyBalance')
 end
 Events.OnConnected.Add(ProjectRP.Client.ClientDataBase.OnConnected)
