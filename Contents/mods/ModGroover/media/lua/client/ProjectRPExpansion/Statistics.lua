@@ -1,4 +1,5 @@
 ProjectRP.Client.Stats = {}
+ProjectRP.Client.Stats.SuspiciousTransferAmount = 5000
 
 ProjectRP.Client.Stats.ReportInventoryMoney = function()
     ---@type ItemContainer
@@ -34,15 +35,12 @@ function ISInventoryTransferAction:transferItem(item)
     if ProjectRP.Client.Money.Values[item:getType()] then
         if not self.moneyCount then self.moneyCount = 0 end
         self.moneyCount = self.moneyCount + ProjectRP.Client.Money.Values[item:getType()].v
+        print(self.moneyCount)
+    end
+    if self.moneyCount and #self.queueList == 0 then
+        if self.moneyCount > ProjectRP.Client.Stats.SuspiciousTransferAmount then
+            ProjectRP.Client.Stats.ReportTransfer(self.moneyCount, self.destContainer)
+        end
     end
     old_transferItem(self, item)
-end
-
-local old_perform = ISInventoryTransferAction.perform
-
-function ISInventoryTransferAction:perform()
-    if self.moneyCount and self.moneyCount > ProjectRP.Client.Stats.SuspiciousTransferAmount then
-        ProjectRP.Client.Stats.ReportTransfer(self.moneyCount, self.destContainer)
-    end
-    old_perform(self)
 end
