@@ -74,16 +74,32 @@ ProjectRP.Server.Stats.RequestMoneyInventory = function()
     end
 end
 
-ProjectRP.Server.Stats.ReportInventoryMoney = function(player, args)
+ProjectRP.Server.Stats.Commands = {}
+
+ProjectRP.Server.Stats.Commands.ReportInventoryMoney = function(player, args)
     local statsCache = ModData.getOrCreate('StatisticsCache')
     statsCache[player:getUsername()] = statsCache[player:getUsername()] or {}
     statsCache[player:getUsername()].inventoryMoney = args.money
     statsCache[player:getUsername()].lastSeen = getGameTime():getDaysSurvived()
 end
 
+---@param player IsoPlayer
+---@param args table
+ProjectRP.Server.Stats.Commands.ReportTransfer = function(player, args)
+    local transferDetails = player:getUsername()..' transferred '..args.money
+    if args.toInventory then
+        transferDetails = transferDetails .. ' to a container at '
+    else
+        transferDetails = transferDetails .. ' from a container at '
+    end
+    transferDetails = transferDetails ..args.x..','..args.y..','..args.z
+    ProjectRP.Server.Stats.LogTransfer(transferDetails)
+end
+
+
 ProjectRP.Server.Stats.OnClientCommand = function(mod, command, player, args)
     if mod ~= 'ProjectRPStatistics' then return end
-    ProjectRP.Server.Stats[command](player, args)
+    ProjectRP.Server.Stats.Commands[command](player, args)
 end
 
 Events.OnClientCommand.Add(ProjectRP.Server.Stats.OnClientCommand)

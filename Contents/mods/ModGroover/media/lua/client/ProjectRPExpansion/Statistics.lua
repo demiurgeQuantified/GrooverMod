@@ -13,9 +13,36 @@ ProjectRP.Client.Stats.ReportInventoryMoney = function()
     sendClientCommand('ProjectRPStatistics', 'ReportInventoryMoney',  {money = sum})
 end
 
+---@param amount number
+---@param container ItemContainer
+ProjectRP.Client.Stats.ReportTransfer = function(amount, container)
+    local containerLoc = container:getParent()
+    local toInventory = instanceof(containerLoc, 'IsoPlayer')
+    sendClientCommand('ProjectRPStatistics', 'ReportTransfer',  {money = amount, toInventory=toInventory, x=containerLoc:getX(), y=containerLoc:getY(), z=containerLoc:getZ()})
+end
+
 ProjectRP.Client.Stats.OnServerCommand = function(mod, command, args)
     if mod ~= 'ProjectRPStatistics' then return end
     ProjectRP.Client.Stats[command](args)
 end
 
 Events.OnServerCommand.Add(ProjectRP.Client.Stats.OnServerCommand)
+
+local old_transferItem = ISInventoryTransferAction.transferItem
+---@param item InventoryItem
+function ISInventoryTransferAction:transferItem(item)
+    if ProjectRP.Client.Money.Values[item:getType()] then
+        if not self.moneyCount then self.moneyCount = 0 end
+        self.moneyCount = self.moneyCount + ProjectRP.Client.Money.Values[item:getType()].v
+    end
+    old_transferItem(self, item)
+end
+
+local old_perform = ISInventoryTransferAction.perform
+
+function ISInventoryTransferAction:perform()
+    if self.moneyCount and self.moneyCount > ProjectRP.Client.Stats.SuspiciousTransferAmount then
+        ProjectRP.Client.Stats.ReportTransfer(self.moneyCount, self.destContainer)
+    end
+    old_perform(self)
+end
