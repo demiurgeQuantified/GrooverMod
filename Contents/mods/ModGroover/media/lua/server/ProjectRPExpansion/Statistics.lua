@@ -1,4 +1,4 @@
-if isClient() then return end
+if not isServer() then return end
 ProjectRP.Server.Stats = {}
 ProjectRP.Server.Stats.SuspiciousTransferAmount = 1000
 
