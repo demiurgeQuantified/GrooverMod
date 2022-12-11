@@ -20,3 +20,14 @@ function ISHealthPanel:createChildren()
         self:addChild(self.revive);
     end
 end
+
+local function onTick()
+    local player = getPlayer()
+    if player:getBodyDamage():getHealth() <= 30 then
+        player:setAvoidDamage(true)
+    else
+        player:setAvoidDamage(false)
+    end
+end
+
+Events.OnTick.Add(onTick)
