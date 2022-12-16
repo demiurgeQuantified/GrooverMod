@@ -1,3 +1,3 @@
 require('ProjectRP/General/MoneySystem/Money')
 
-ProjectRP.Client.Money.WalletTypes = {'Base.Wallet', 'Base.Wallet2', 'Base.Wallet3', 'Base.Wallet4'}
+ProjectRP.Client.Money.WalletTypes = {Wallet = true, Wallet2 = true, Wallet3 = true, Wallet4 = true}
