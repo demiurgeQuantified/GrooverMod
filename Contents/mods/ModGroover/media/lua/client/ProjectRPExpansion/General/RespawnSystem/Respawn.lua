@@ -139,9 +139,8 @@ local keyExceptions = { ["CarKey"] = true, ["KeyRing"] = true, ["Key1"] = true, 
 local function isNotKey(item)
 	return not keyExceptions[item:getType()]
 end
-local wallets = {["Wallet"] = true, ["Wallet2"] = true, ["Wallet3"] = true, ["Wallet4"] = true}
 local function isWallet(item)
-	return wallets[item:getType()]
+	return ProjectRP.Client.Money.WalletTypes[item:getType()]
 end
 
 function ProjectRP.Client.Respawn.RemoveBody()
