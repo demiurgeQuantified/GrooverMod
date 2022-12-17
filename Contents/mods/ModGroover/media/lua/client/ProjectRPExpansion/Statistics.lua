@@ -5,7 +5,7 @@ ProjectRP.Client.Stats.ReportInventoryMoney = function()
     ---@type ItemContainer
     local inventory = getPlayer():getInventory()
     local sum = ProjectRP.Client.Money.getMoneyCountInContainer(inventory)
-    for _,walletType in pairs(ProjectRP.Client.Money.WalletTypes) do
+    for walletType,_ in pairs(ProjectRP.Client.Money.WalletTypes) do
         local wallets = inventory:getAllType(walletType)
         for i = 0, wallets:size()-1 do
             sum = sum + wallets:get(i):getModData().moneyCount
