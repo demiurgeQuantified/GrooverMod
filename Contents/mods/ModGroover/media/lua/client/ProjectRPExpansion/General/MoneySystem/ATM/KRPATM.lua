@@ -13,3 +13,11 @@ ProjectRP.Client.Money.ATM.increaseMoneyBalance = function(playerObj, nnum)
     playerObj:StopAllActionQueue()
     sendClientCommand(playerObj, 'ProjectRPDataBase', 'IncreaseMoneyBalance', { tableName = "MoneyBalance", num = nnum } )
 end
+
+local old_isValid = ISInventoryTransferAction.isValid
+function ISInventoryTransferAction:isValid()
+    if KRPATMWindow.instance and KRPATMWindow.instance:isVisible() then
+        return false;
+    end
+    return old_isValid(self)
+end

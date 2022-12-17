@@ -64,13 +64,14 @@ function ProjectRP.Client.WOContext.OnFillWorldObjectContextMenu(player, context
                 door:getProperties():Set("forceLocked", "true")            
             end, playerObj)    
 		end
-
-        if v:getSprite() ~= nil and (v:getSprite():getName() == "ProjectRP_0" or v:getSprite():getName() == "ProjectRP_1") then
-            context:addOption("Use ATM", playerObj, function(pl) 
-                local win = KRPATMWindow:new(pl);
-                win:initialise();
-                win:addToUIManager();
-            end)
+        if not (KRPATMWindow.instance and KRPATMWindow.instance:isVisible()) then
+            if v:getSprite() ~= nil and (v:getSprite():getName() == "ProjectRP_0" or v:getSprite():getName() == "ProjectRP_1") then
+                context:addOption("Use ATM", playerObj, function(pl)
+                    local win = KRPATMWindow:new(pl);
+                    win:initialise();
+                    win:addToUIManager();
+                end)
+            end
         end
     end
 
