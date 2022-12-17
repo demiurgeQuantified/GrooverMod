@@ -35,7 +35,6 @@ function ISInventoryTransferAction:transferItem(item)
     if ProjectRP.Client.Money.Values[item:getType()] then
         if not self.moneyCount then self.moneyCount = 0 end
         self.moneyCount = self.moneyCount + ProjectRP.Client.Money.Values[item:getType()].v
-        print(self.moneyCount)
     end
     if self.moneyCount and #self.queueList == 0 then
         if self.moneyCount > ProjectRP.Client.Stats.SuspiciousTransferAmount then
