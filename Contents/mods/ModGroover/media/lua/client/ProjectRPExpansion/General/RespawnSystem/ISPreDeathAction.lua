@@ -1,7 +1,6 @@
 require 'ProjectRP/General/RespawnSystem/ISPreDeathAction'
 
 local numBodyParts = BodyPartType.ToIndex(BodyPartType.MAX)
-
 function ISPreDeathAction:update()
     if self.character:getBodyDamage():getHealth() < 25 then
         self.character:getBodyDamage():AddGeneralHealth((25 - self.character:getBodyDamage():getHealth()) * numBodyParts)
@@ -25,7 +24,9 @@ local function onTick()
     local player = getPlayer()
     if player:getBodyDamage():getHealth() <= 30 then
         player:setAvoidDamage(true)
-    else
+        player:getModData().downed = true
+    elseif player:getModData().downed then
+        player:getModData().downed = false
         player:setAvoidDamage(false)
     end
 end
