@@ -18,7 +18,7 @@ end
 ---@param container ItemContainer
 ProjectRP.Client.Stats.ReportTransfer = function(amount, container)
     local containerLoc = container:getParent()
-    local toInventory = instanceof(containerLoc, 'IsoPlayer')
+    local toInventory = instanceof(containerLoc, 'InventoryItem') and containerLoc:isInPlayerInventory()
     sendClientCommand('ProjectRPStatistics', 'ReportTransfer',  {money = amount, toInventory=toInventory, x=containerLoc:getX(), y=containerLoc:getY(), z=containerLoc:getZ()})
 end
 
