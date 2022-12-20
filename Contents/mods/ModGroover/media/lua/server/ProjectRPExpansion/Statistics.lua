@@ -32,7 +32,7 @@ ProjectRP.Server.Stats.LogTransfer = function(transferDetails)
     print('SUSPICIOUS: ' .. transferDetails)
 
     local fileWriter = getFileWriter('projectrp_log.txt', true, true)
-    fileWriter:write(tostring(getTimestamp())..': '..transferDetails..'\n')
+    fileWriter:write(tostring(getTimestampMs())..': '..transferDetails..'\n')
     fileWriter:close()
 end
 
