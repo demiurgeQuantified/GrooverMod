@@ -19,7 +19,7 @@ end
 ProjectRP.Client.Stats.ReportTransfer = function(amount, container)
     local containerLoc = container:getParent()
     local toInventory = instanceof(containerLoc, 'InventoryItem') and containerLoc:isInPlayerInventory()
-    sendClientCommand('ProjectRPStatistics', 'ReportTransfer',  {money = amount, toInventory=toInventory, x=containerLoc:getX(), y=containerLoc:getY(), z=containerLoc:getZ()})
+    sendClientCommand('ProjectRPStatistics', 'ReportTransfer',  {money = amount, toInventory=toInventory, x=math.floor(containerLoc:getX()), y=math.floor(containerLoc:getY()), z=math.floor(containerLoc:getZ())})
 end
 
 ProjectRP.Client.Stats.OnServerCommand = function(mod, command, args)
@@ -32,6 +32,7 @@ Events.OnServerCommand.Add(ProjectRP.Client.Stats.OnServerCommand)
 local old_transferItem = ISInventoryTransferAction.transferItem
 ---@param item InventoryItem
 function ISInventoryTransferAction:transferItem(item)
+    self:checkQueueList()
     if ProjectRP.Client.Money.Values[item:getType()] then
         if not self.moneyCount then self.moneyCount = 0 end
         self.moneyCount = self.moneyCount + ProjectRP.Client.Money.Values[item:getType()].v
