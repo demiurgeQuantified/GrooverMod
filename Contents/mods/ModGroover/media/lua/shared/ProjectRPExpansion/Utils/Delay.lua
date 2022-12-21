@@ -2,17 +2,17 @@ local Delay = {}
 Delay.currentTick = 0
 Delay.Delays = {}
 
-Delay.DelayFunction = function(closure, time)
+Delay.DelayFunction = function(func, time)
     Delay.Delays[Delay.currentTick + time] = Delay.Delays[Delay.currentTick + time] or {}
-    table.insert(Delay.Delays[Delay.currentTick + time], closure)
+    table.insert(Delay.Delays[Delay.currentTick + time], func)
 end
 
 Delay.OnTick = function(tick)
     Delay.currentTick = tick
-    if Delay.Delays[tick] then
-        for _,closure in pairs(Delay.Delays[tick]) do
-            closure()
-        end
+    local delaysThisTick = Delay.Delays[tick]
+    if not delaysThisTick then return end
+    for i = 1, #delaysThisTick do
+        delaysThisTick[i]()
     end
 end
 
