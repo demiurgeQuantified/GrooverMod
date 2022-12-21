@@ -1,6 +1,10 @@
 require 'ProjectRP/General/WorldObjectContextMenu'
 Events.OnFillWorldObjectContextMenu.Remove(ProjectRP.Client.WOContext.OnFillWorldObjectContextMenu)
 
+local ATMSprites = {location_business_bank_01_64 = true, location_business_bank_01_65 = true,
+                    location_business_bank_01_66 = true, location_business_bank_01_67 = true,
+                    ProjectRP_0 = true, ProjectRP_1 = true}
+
 function ProjectRP.Client.WOContext.OnFillWorldObjectContextMenu(player, context, worldObjects, test)
 	local playerObj = getSpecificPlayer(player)
     worldObjects = ProjectRP.Client.WOContext.removeDuplicates(worldObjects)
@@ -65,7 +69,7 @@ function ProjectRP.Client.WOContext.OnFillWorldObjectContextMenu(player, context
             end, playerObj)    
 		end
         if not (KRPATMWindow.instance and KRPATMWindow.instance:isVisible()) then
-            if v:getSprite() ~= nil and (v:getSprite():getName() == "ProjectRP_0" or v:getSprite():getName() == "ProjectRP_1") then
+            if v:getSprite() ~= nil and ATMSprites[v:getSprite():getName()] then
                 context:addOption("Use ATM", playerObj, function(pl)
                     local win = KRPATMWindow:new(pl);
                     win:initialise();
