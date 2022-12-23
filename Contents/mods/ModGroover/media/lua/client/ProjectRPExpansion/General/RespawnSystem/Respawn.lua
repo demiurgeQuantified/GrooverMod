@@ -1,6 +1,42 @@
 require 'ProjectRP/General/RespawnSystem/Respawn'
 Events.OnCreatePlayer.Remove(ProjectRP.Client.Respawn.onSpawn);
 
+function ISPostDeathUI:createChildren()
+	local buttonWid = 250
+	local buttonHgt = 40
+	local buttonGapY = 12
+	local buttonX = 0
+	local buttonY = 0
+	local totalHgt = (buttonHgt * 2) + (buttonGapY * 1)
+
+	self:setWidth(buttonWid)
+	self:setHeight(totalHgt)
+	-- must set these after setWidth/setHeight or getKeepOnScreen will mess them up
+	self:setX(self.screenX + (self.screenWidth - buttonWid) / 2)
+	self:setY(self.screenHeight - 40 - totalHgt)
+
+	local button = ISButton:new(buttonX - 50, buttonY - (buttonHgt + buttonGapY), buttonWid + 100, buttonHgt, "Don't exit without respawning!")
+	self:configButton(button)
+	self:addChild(button)
+
+	local button = ISButton:new(buttonX, buttonY, buttonWid, buttonHgt, "Respawn in Hospital", self, self.onTrueRespawn)
+	self:configButton(button)
+	self:addChild(button)
+	self.buttonExit = button
+	buttonY = buttonY + buttonHgt + buttonGapY
+
+	button = ISButton:new(buttonX, buttonY + 99999, buttonWid, buttonHgt, getText("IGUI_PostDeath_Respawn"), self, self.onRespawn)
+	self:configButton(button)
+	self:addChild(button)
+	self.buttonRespawn = button
+	buttonY = buttonY + buttonHgt + buttonGapY
+
+	button = ISButton:new(buttonX, buttonY + 99999, buttonWid, buttonHgt, getText("IGUI_PostDeath_Quit"), self, self.onQuitToDesktop)
+	self:configButton(button)
+	self:addChild(button)
+	self.buttonQuit = button
+end
+
 function ISPostDeathUI:onTrueRespawn()
 	if MainScreen.instance:isReallyVisible() then return end
 	self:setVisible(false)
@@ -177,3 +213,22 @@ function ProjectRP.Client.Respawn.RemoveBody()
 		end
 	end
 end
+
+--TEMP FIX: death loops are still happening, so just force respawn them if they die too many times in a short period
+--TODO: fix death loops so we don't have to do this!
+local diedThisMinute = false
+local preventDeathLoop = function()
+	if diedThisMinute then
+		ISPostDeathUI.isTrueDeath = true
+	end
+	diedThisMinute = true
+end
+Events.OnPlayerDeath.Add(preventDeathLoop)
+
+Events.OnPlayerDeath.Remove(ISPostDeathUI.OnPlayerDeath2)
+Events.OnPlayerDeath.Add(ISPostDeathUI.OnPlayerDeath2)
+
+local resetDeathLoopCounter = function()
+	diedThisMinute = false
+end
+Events.EveryTenMinutes.Add(resetDeathLoopCounter)
